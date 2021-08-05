@@ -77,7 +77,7 @@ resource "aws_security_group" "ssh-allowed" {
         cidr_blocks = ["0.0.0.0/0"]
     }
     dynamic "ingress" {
-      for_each = toset([22,80])
+      for_each = toset([22,80,443])
       content {
         from_port = ingress.value
         to_port =  ingress.value
@@ -118,7 +118,7 @@ resource "aws_iam_instance_profile" "ecs_agent" {
 }
 
 resource "aws_launch_configuration" "ecs_launch_config" {
-    image_id             = "ami-09e67e426f25ce0d7"
+    image_id             = "ami-094d4d00fd7462815"
     iam_instance_profile = aws_iam_instance_profile.ecs_agent.name
     security_groups      = [aws_security_group.ssh-allowed.id]
     user_data            = "#!/bin/bash\necho ECS_CLUSTER=my-cluster >> /etc/ecs/ecs.config"
